@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
+    <title>王奕龙的个人网站</title>
     <link>https://wangYLML1118.github.io/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <description>Recent content on My Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 13 May 2019 17:46:47 +0800</lastBuildDate>
@@ -17,7 +17,7 @@
       <pubDate>Mon, 13 May 2019 17:46:47 +0800</pubDate>
       
       <guid>https://wangYLML1118.github.io/post/blog/</guid>
-      <description>这是我的第一个博客</description>
+      <description>这是我的第一篇文章，什么都没有写</description>
     </item>
     
   </channel>

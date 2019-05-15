@@ -226,15 +226,68 @@
                         <font size="5">二、数据结构(date structure)二:递归</font>
                     </a>
                 </p>
-                <p>递归：递归必须满足三个条件：1、递归必须有一个明确的终止条件 2、该函数所处理的数据规模必须递减 3、这个转化必须是可解的 定义：一个函数自己直接或间接调用自己 不同函数之间的相互调用 <code>#include
+                <p>递归：递归必须满足三个条件：1、递归必须有一个明确的终止条件 2、该函数所处理的数据规模必须递减 3、这个转化必须是可解的 定义：一个函数自己直接或间接调用自己 不同函数之间的相互调用 
+                    <code>#include
                    <stdio.h>
-                        void f(); void g(); void k(); void f() { printf("FFF\n"); g(); printf("1111\n"); } void g() { printf("GGG\n"); k(); printf("2222\n"); } void k() { printf("KKK\n"); } int main(void) { f(); } </code>结果为FFFGGGKKK22221111 自己调用自己 <code>#include
+                        void f();
+                       void g();
+                       void k();
+                       void f() 
+                       {
+                       printf("FFF\n");
+                       g();
+                       printf("1111\n");
+                       }
+                       void g()
+                       { 
+                       printf("GGG\n");
+                       k();
+                       printf("2222\n");
+                       }
+                       void k()
+                       {
+                       printf("KKK\n");
+                       }
+                       int main(void)
+                       {
+                       f();
+                       }
+                       </code>
+                        <p>结果为FFFGGGKKK22221111 自己调用自己 </p>
+                        <code>
+                            #include
                         <stdio.h>
-                            void f() { printf("haha\n"); f(); } int main(void) { f(); }</code> 一直输出haha直到溢栈 <code>#include
+                            void f()
+                            {
+                            printf("haha\n");
+                            f();
+                            }
+                            int main(void) 
+                            { 
+                            f();
+                            }
+                            </code> <p>一直输出haha直到溢栈</p>
+                            <code>#include
                             <stdio.h>
-                                void f(int n) { if(n==1) { printf("haha\n"); } else { f(n-1); } } int mian(void) { f(3); } </code>求阶乘：2的阶乘要依靠1的阶乘实现，3的阶乘要依靠2的阶乘来实现，以此类推 <code>#include
+                                void f(int n)
+                                {
+                                if(n==1)
+                                { printf("haha\n"); }
+                                else
+                                {
+                                f(n-1);
+                                }
+                                }
+                                int mian(void)
+                                { 
+                                f(3);
+                                }
+                                </code><p>求阶乘：2的阶乘要依靠1的阶乘实现，3的阶乘要依靠2的阶乘来实现，以此类推 </p>
+                                <code>#include
                                 <stdio.h>
-                                    int main(void) { int val,i,mult=1; printf("请输入一个数字：val="); scanf("%d",&val); for(i=1;i
+                                    int main(void)
+                                    {
+                                    int val,i,mult=1; printf("请输入一个数字：val="); scanf("%d",&val); for(i=1;i
 
                                     <val;++i) { mult*=i; } printf( "阶乘为：%d",mult); } </code>此程序会溢出 运用递归的算法 #include<stdio.h>
                                         //假定n的值是1或大于1的值 long f(long val) { if(1==n) { return 1; } else ( return f(n-1)*n; ) } int mian(void) { printf("%ld\n",f(3)); } 结果为6 1到100的和 #include

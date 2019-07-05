@@ -605,249 +605,260 @@ blockquote {
 
 </head>
 <body>
-<h1 id="c-primer-chapter3%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%8432">C++ Primer Chapter3:字符串、向量和数组3.2</h1>
-<h3 id="string%E5%AF%B9%E8%B1%A1%E4%B8%8A%E7%9A%84%E6%93%8D%E4%BD%9C%EF%BC%9Astringsizetype%E7%B1%BB%E5%9E%8B">string对象上的操作：string::size_type类型</h3>
+<h1 id="c-primer-chapter3%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84%E2%80%94%E2%80%94vector%E5%AE%B9%E5%99%A8">C++ Primer Chapter3：字符串、向量和数组——vector容器</h1>
+<h2 id="%E6%A0%87%E5%87%86%E5%BA%93%E7%B1%BB%E5%9E%8Bvector">标准库类型vector</h2>
 <ul>
 <li>
-<p>size函数返回的是一个string::size_type类型的值。</p>
+<p>标准库类型vector表示对象的集合，其中所有对象的类型都相等。集合中的每一个对象都有一个与之对应的索引，索引用于访问对象。因为vector“容纳”着其他对象，所以它也常被<code>容器(container)</code>。后面将会有对容器的更详细的介绍。</p>
 </li>
 <li>
-<p>string及其他大多数标准库类型都定义了几种配套的类型。这些配套类型体现了标准库类型与及其无关的特性。size_type类型就是其中一种。使用时通过作用于操作符表明名字size_type是在类string中定义的。</p>
-</li>
-<li>
-<p>他是一个无符号类型的值，而且能足够存放下任何string对象的大小。所有用于存放string类的size函数返回值的变量，都应该是string::size_type类型的。</p>
-</li>
-<li>
-<p>在c++11新标准中，允许编译器通过auto或decltype来推断变量的类型：</p>
-<pre><code>  auto len=line.size()//len的类型是string::size_type
+<p>要想使用vector，必须包含适当的头文件。在后续的例子中，都将假定做了如下using声明：</p>
+<pre><code>  #include&lt;vector&gt;
+  using std::vector;
 </code></pre>
 </li>
 <li>
-<p>由于size函数返回的是一个无符号整型数，所以如果在表达式中混用了带符号数和无符号数可能引发意想不到的效果。</p>
+<p>c++语言既有<code>类模板(class template)</code>,也有函数模板，其中vector是一个类模板。</p>
+</li>
+<li>
+<p>模板本身不是类或函数，相反可以将模板看做为编译器生成类或函数编写的一份说明。编译器根据模板创建类或函数的过程称为<code>实例化(instantiation)</code>，当使用模板时，需要指出要实例化成何种类型。</p>
+</li>
+<li>
+<p>对于类模板来说，我们要提供额外信息来制定模板到底实例化成什么样的类，需要提供哪些信息由模板决定。提供信息的方式总是这样：即在模板名字后面跟一堆尖括号，在括号上放上信息。</p>
+</li>
+<li>
+<p>以vector为例，提供额外的信息是vector内所存放的类型：</p>
+<pre><code>  vector&lt;int&gt; ivec;//ivecbaocunint类型的对象
+  vector&lt;Sales_item&gt; Sales_vec;//保存Sales_item类型的对象
+  vector&lt;Vector&lt;string&gt;&gt; file;//该向量的元素是vector对象（可理解为c语言中二维数组）
+</code></pre>
+</li>
+<li>
+<p>vector是模板而非类型，有vector生成的类型必须包含vector中元素的类型。</p>
+</li>
+<li>
+<p>vector能容纳绝大多数的类型作为其元素，但是因为引用不是对象，所以不存在包含引用的vector。除此之外，其他绝大多数内置类型和类类型都可以构成vector对象，甚至组成vector的元素也可以是vector。</p>
+</li>
+<li>
+<p>某些编译器可能仍需要以老师的声明语句来处理元素为vector的vector对象，如vector&lt;vector<int> &gt;。</p>
 </li>
 </ul>
-<h3 id="%E6%AF%94%E8%BE%83string%E5%AF%B9%E8%B1%A1">比较string对象</h3>
+<h2 id="%E5%AE%9A%E4%B9%89%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96vector%E5%AF%B9%E8%B1%A1">定义和初始化vector对象</h2>
 <ul>
 <li>
-<p>string类定义了集中用于比较字符串的运算符。这些比较运算符注意比较string对象中的字符，并且对大小写敏感，也就是说，比较同一个字符的大写形式和小写形式是不同的。</p>
+<p>和任何一种类类型一样，vector对象控制着定义和初始化对象的方法。以下是初始化vector对象的常用方法；</p>
 </li>
 <li>
-<p>相等性运算（==和！=）分别检验两个string对象相等或不等，string对象相等意味着他们的长度相同而且所包含的字符也全都相等，关系运算符&lt;、&lt;=、&gt;、&gt;=分别检验以恶搞string对象是否小于、小于等于、大于、大于等于另一个string对象，上述这些运算符都按照(区分大小写的)字典顺序。</p>
-<pre><code>          1.如果两个string对象的长度不同，而且较短string对象的每个字符都与较长string对象对应位置上的字符相同，就说较短string对象小于较长string对象。
-          2.如果两个string对象在某些对应位置上不一样，则string对象的比较结果就是string对象中第一个相异字符比较的结果。
-          string str=&quot;Hello&quot;;
-          string phase=&quot;Hello World&quot;;
-          string slang=&quot;Hiya&quot;;
+<p><img src="初始化vector对象的方法.png" alt="初始化vector对象的方法"></p>
+</li>
+<li>
+<p>可以默认初始化vector对象，从而获得一个指定类型的空vector。</p>
+<pre><code>  vector&lt;string&gt; svec;//默认初始化，svec不包含任何元素
 </code></pre>
 </li>
 <li>
-<p>根据规则一可判断，对象str小于对象phase：根据规则二可判断，对象slang既大于str，也大于phase。</p>
+<p>事实上，最常见的方式是先定义一个空vector，让后当程序运行时获取到元素的值再逐一添加，</p>
 </li>
-</ul>
-<h3 id="%E4%B8%BAstring%E5%AF%B9%E8%B1%A1%E8%B5%8B%E5%80%BC">为string对象赋值</h3>
-<ul>
 <li>
-<p>在设计标准库类型的时候都力求在易用性上向内置类型看齐，因此大多数库类型都支持赋值操作，对于string类而言，允许把一个对象的值赋给另一个对象。</p>
-<pre><code>          string s1=&quot;hello,&quot;,s2=&quot;Word\n&quot;;
-          string s3=s1+s2;//s3的内容是hello,word\n
-          s1+=s2;//等价于s1=s1+s2;
+<p>也可以在定义是制定元素的初始值，例如，允许吧一个vector对象的元素拷贝给另一个vector对象，此时，新vector对象的元素就是元vector对象对应的副本。两个vector1对象的类型必须相同。</p>
+<pre><code>  vector&lt;int&gt; ivec;//初始状态为空
+  //在此处个iivec添加一些值
+  vector&lt;int&gt; ivec2(ivec)://把ivec的元素拷贝给ivec2
+  vector&lt;int&gt; ivec3()=ivec;//把ivec的元素拷贝给ivec3
+  vector&lt;string&gt; svec(ivec2);//错误，svec的元素师string对象，不是int
 </code></pre>
 </li>
 </ul>
-<h3 id="%E5%AD%97%E9%9D%A2%E5%80%BC%E5%92%8Cstring%E5%AF%B9%E8%B1%A1%E7%9B%B8%E5%8A%A0">字面值和string对象相加</h3>
+<h3 id="%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96vector%E5%AF%B9%E8%B1%A1">列表初始化vector对象</h3>
 <ul>
 <li>
-<p>即使一种类型并非所需，我们也可以使用它，不过前提是该种类型可以自动转化成所需的类型。因为标准库允许把<code>字符字面值</code>和<code>字符串字面值</code>转换成string对象,所以在需要string对象的地方就可已使用这两种字面值来代替。</p>
-<pre><code>          string s1=&quot;Hello&quot;,s2=&quot;World&quot;;//在s1和s2中都没有标点符号
-          string s3=s1+&quot;,&quot;+s2+'\n';
-</code></pre>
+<p>c+=11新标准还提供了另一种为vector对象的元素赋初值的方法，即列表初始化。此时，用花括号括起来的0个或多个初始元素值被赋给vector对象。
+vector<string> articals={&quot;a&quot;,&quot;an&quot;,&quot;the&quot;};
+上述vector对象包含三个元素；第一个是元素“a”，第二个是元素“an”，第三个是元素“the”。</p>
 </li>
 <li>
-<p>当爸string对象和字符字面值集字符串字面值及字符串字面值混在一条语句中使用时，必须确保每个加法运算符的两侧的运算对象至少有一个时string；</p>
-<pre><code>          string s4=s1+&quot;,&quot;;//正确，把一个string对象和一个字面值相加
-          string s5=&quot;hello&quot;+&quot;,&quot;;//错误，两个运算对象都不是string
-          //正确，每个加法运算符都有一个对象是string
-          string s6=s1+&quot;,&quot;+&quot;word&quot;;
-          string s7=&quot;hello&quot;+&quot;,&quot;+s2;//错误，不能把字面值直接相加。
+<p>大多数情况下这些初始化方式可以互相等价地使用，不过也并非一直如此。目前两种例外情况是：奇异，使用拷贝初始化时（即使用=时），只能提供一个初始值；其二，如果提供的是一个类内初始值，则只能使用拷贝初始化或者使用花括号初始化。第三种特殊的要求是，如果提供的是初始元素值的列表，则只能把初始值放在花括号例进行列表初始化。</p>
+<pre><code>  vector&lt;string&gt; v1{&quot;a&quot;,&quot;an&quot;,&quot;the&quot;};//列表初始化
+  vector&lt;string&gt; v2(&quot;a&quot;,&quot;an&quot;,&quot;the&quot;);//错误
 </code></pre>
-</li>
-<li>
-<p>s6中的表达式s1+&quot;,&quot;的结果是一个string对象，他同时作为第二个假发运算符的左侧运算对象，因此上述语句和下面的两个语句是等价的:</p>
-<pre><code>          string tmp=s1+&quot;,&quot;;//正确：加法运算符有一个运算对象是string
-          s6=tmp+&quot;word&quot;;//正确加法运算符有一个对象是string
-</code></pre>
-</li>
-<li>
-<p>另一方面，s7的初始化是非法的</p>
-<pre><code>          string s7=(&quot;hello&quot;+&quot;,&quot;)+s2;//错误，不能把字面值直接相加。
-</code></pre>
-</li>
-<li>
-<p>因为某些历史原因，也为了与C兼容，所以c++原因呢中的字符串字面值并不是标准库类型string的对象，切记，<code>字符串字面值</code>与strint是不同的类型。</p>
 </li>
 </ul>
-<h2 id="%E5%A4%84%E7%90%86string%E5%AF%B9%E8%B1%A1%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B">处理string对象中的类型</h2>
-<ul>
-<li>我们经常需要单独处理string对象中的字符，比如检查一个string对象是否包含空白，或者把string对象中的字母改成小写，再或者查看某个特定的字符是否出现等。</li>
-<li>处理这类问题的关键是如何获取字符串本身。有时候需要处理string对象中的每一个字符，另外一些时候只需处理某个特定的字符，有时候遇到某个条件就需要停止。</li>
-<li>另一个关键问题是要知道能改变某个字符的特性，在cctype头文件中定义了一组标准库函数处理这部分工作。
-<img src="cctype头文件中的函数.png" alt="cctype头文件中的函数"></li>
-</ul>
-<h3 id="%E5%A4%84%E7%90%86%E6%AF%8F%E4%B8%AA%E5%AD%97%E7%AC%A6%EF%BC%9F%E4%BD%BF%E7%94%A8%E5%9F%BA%E4%BA%8E%E8%8C%83%E5%9B%B4%E7%9A%84for%E8%AF%AD%E5%8F%A5">处理每个字符？使用基于范围的for语句</h3>
+<h3 id="%E5%88%9B%E5%BB%BA%E6%8C%87%E5%AE%9A%E6%95%B0%E9%87%8F%E7%9A%84%E5%85%83%E7%B4%A0">创建指定数量的元素</h3>
 <ul>
 <li>
-<p>如果相对string对象中的每个字符做点儿什么操作，使用c++11新标准提供的一种语句:<code>范围for(range for)语句</code>。这种语句便利给定序列中的每个元素并对序列中的每个值执行某种操作，其语法形式是：</p>
-<pre><code>          for(declaration:expression)
+<p>还可以使用vector对象容纳的元素数量和所有元素的同意初始值来初始化vector对象。</p>
+<pre><code>  vector&lt;string&gt; ivec(10,-1);//10个int类型的元素，每个都被初始化为-1
+  vector&lt;string&gt; svec(10,&quot;hi!&quot;);//10个string类型的元素，每个都被初始化为“hi！”
+</code></pre>
+</li>
+</ul>
+<h3 id="%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96">值初始化</h3>
+<ul>
+<li>
+<p>通常情况下，可以只提供vector对象容纳的元素数量而不用略去初始值。此时，哭会创建一个<code>值初始化(value-initialized)</code>的元素初值。并把它赋给容器中所有元素。这样处置vector对象中元素的类型决定。</p>
+</li>
+<li>
+<p>如果vector对象的元素是内置类型，比如int，则元素初始值自动设为0.如果元素类型是某种类类型，比如string，则元素类类默认初始化；</p>
+<pre><code>  vector&lt;int&gt; ivec(10);//10个元素，每个初始化为0
+  vector&lt;string&gt; svec(10);//10个元素，每个元素都是空string对象
+</code></pre>
+</li>
+<li>
+<p>对这种初始化的方式有两个特殊限制：其一，有些类型要求必须明确提供初始值，如果vector对象中元素的类型不支持默认初始化我们就必须提供初始的元素值。对这种类型的元素来说，只提供元素的数量而不设定初始值无法完成初始化工作。其二，如果只提供了元素的数量而没有设定初始值，只能使用直接初始化：</p>
+<pre><code>  vector&lt;int&gt; v1=10;//错误，必须使用直接初始化的形式指定向量大小
+  显而易见，此时不适合使用拷贝初始化。
+</code></pre>
+</li>
+</ul>
+<h3 id="%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%80%BC%E8%BF%98%E6%98%AF%E5%85%83%E7%B4%A0%E6%95%B0%E9%87%8F%EF%BC%9F">列表初始值还是元素数量？</h3>
+<ul>
+<li>
+<p>在某些情况下，初始化的真实含义依赖于传递初始值时用的是花括号还是圆括号。</p>
+<pre><code>  vector&lt;int&gt; v1(10);//v1有10个元素，每个的值都是0；
+  vector&lt;int&gt; v2{10};//v2有1各元素，钙元素的值是10
+  vector&lt;int&gt; v3(10,1);//v3有10个元素，每个的值都是1
+  vector&lt;int&gt; v4{10,1};//v4有2个元素，值分别是10和1
+</code></pre>
+</li>
+<li>
+<p>如果使用的是圆括号，可以说提供的值是用来构造(construct)vector对象的。例如，v1的初始值说明了vector对象的容量：v3的两个初始值分别说明了vector对象的容量和元素的初值。</p>
+</li>
+<li>
+<p>如果用的是花括号，我们可以表述成我们想列表初始化(list initialize)该vector对象。也就是说，初始化过程会尽可能地把花括号内的值当成是元素初始值的列表来处理，只有在无法执行列表初始化时才会考虑其他初始化方式。</p>
+</li>
+<li>
+<p>如果初始化时使用了花括号的形式，但提供的值不能被用来列表初始化，就要考虑用这样的只来构造vector对象了。例如，要想初始化列表一个含有string对象的vector对象，应该能提供能赋给string对象的初值。此时不难区分到底是要列表初始化vector对象的元素还是给定的容量值来构造vector对象。</p>
+<pre><code>  vector&lt;string&gt; v5{&quot;hi&quot;};//列表初始化，v5只有一个元素。
+  vector&lt;string&gt; v6(&quot;hi&quot;);//错误，不能使用字符串字面值构建vector对象
+  vector&lt;string&gt; v7{10};//v7有10个默认初始化的元素
+  vector&lt;string&gt; v8{10.&quot;hi&quot;};//v8有10值为“hi”的元素
+</code></pre>
+</li>
+<li>
+<p>尽管在上面的例子中除了第二条语句之外都用了花括号，但其实只有v5是列表初始化。要想列表初始化vector对象，花括号例的值必须与元素类型相同。显然不能用int初始化string对象，所以v7，v8的提供的值不能作为元素的初始值。确认无法执行列表初始化之后，编译器会尝试用默认值初始化vector对象。</p>
+</li>
+</ul>
+<h2 id="%E6%83%B3vector%E5%AF%B9%E8%B1%A1%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0">想vector对象中添加元素</h2>
+<ul>
+<li>
+<p>对vector对象来说直接初始化的方式适用于三种情况：初始值一直且数量较少、初始值时另一个vector对象的副本、所有元素的初始值都相同。但是实际情况下，更常见的情况是：创建一个vector对象时并不清楚实际所需的元素个数，元素的值也经常无法确定。还有些时候即使元素的初值一直，但这些只总量较大，而且各不相同，那么在创建vector对象时候执行初始化操作也会显得过于繁琐。</p>
+</li>
+<li>
+<p>如果vector对象包含的元素是从0到99或0到999，更好的方法是县创建一个空vector然后在运行时在利用vector的成员函数<code>push_back</code>向其中添加元素push_back负责把一个值当成vector对象的微元素“压到(push)”vector队形的“尾端（back）”。例如;</p>
+<pre><code>          vector&lt;int&gt; v2;//空vector对象
+          for(int i=0;i!=100;i++)
           {
-                  statement;
+              v2.push_back(i);//依次把整数放到v2的末尾
+          }
+          //循环结束后v2中油100个元素，从0到99
+</code></pre>
+</li>
+<li>
+<p>如果直到运行时才能知道vector对象中元素的确切个数，也应该使用刚刚这种方法创建vector对象并为其赋值。例如，有时需要试试毒如数据然后将其赋给vector对象：</p>
+<pre><code>          //从标准输入中读取单词，将其作为vecyor对象的元素存储
+          string word;
+          vector&lt;string&gt; text;//空vector对象
+          while(cin&gt;&gt;word)
+          {
+              text.push_back(word);//把word添加到text后面
           }
 </code></pre>
 </li>
 <li>
-<p>其中，<code>expreession部分</code>是一个对象，用于表示一个序列。leclaration部分负责定义一个变量，该变量将被用于访问序列中的基础元素，每次迭代，declaration部分的变量会被初始化为expression部分的下一个元素值。</p>
+<p>关键概念：vector对象能高效增长</p>
+<pre><code>          c++标准要求vector应该能在运行时高效快速地添加元素。所以，在定义vector对象的时候设定其大小没有什么意义和必要事实上这么做性能可能更差，只有一种例外，就是所有(all)元素的值都一样。一旦元素的值有所不同，更有效的方法是先定义一个空的vector对象，在运行时向其中添加具体值。而且vector还提供了方法，允许我们进一步提升动态添加元素的性能。
+          开始的时候创建空的vector对象，在运行的时候添加元素，这一做法与c语言中内置数组类型的用法不同，c语言在创建vector对象时顺便制定其容量是最好的。
+</code></pre>
+</li>
+</ul>
+<h3 id="%E5%90%91vector%E5%AF%B9%E8%B1%A1%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0%E8%95%B4%E5%90%AB%E7%9A%84%E7%BC%96%E7%A8%8B%E5%81%87%E5%AE%9A">向vector对象添加元素蕴含的编程假定</h3>
+<ul>
+<li>
+<p>要想高效便捷地向vector对象中添加元素，必须要确保所写的循环正确无误，特别是在循环有可能改变vector对象容量的时候。随着我们对vector的更多使用，我们还会逐渐了解到其他的一些隐含的要求。其中一条是现在要指出的：如果循环体内包含有向vector对象添加完元素的语句，则不能使用for范围语句</p>
+<pre><code>          for范围语句体内不应改变其所遍历序列的大小，因为序列在进入语句是大小已经确定。
+</code></pre>
+</li>
+</ul>
+<h2 id="%E5%85%B6%E4%BB%96vector%E6%93%8D%E4%BD%9C">其他vector操作</h2>
+<ul>
+<li>
+<p>除了push_back操作之外，vector还提供了其他几种操作。大多数都和string的相关操作类似。
+<img src="vector支持的操作.png" alt="vector支持的操作"></p>
 </li>
 <li>
-<p>一个string对象表示一个字符的序列，所以string独享可以作为<code>范围for语句</code>的<code>expression部分</code>。我们可以使用范围for语句把string对象中的每个字符打印出来。</p>
-<pre><code>          string str(&quot;some string&quot;)
-          //每行输出str中的一个字符
-          for(auto c:str)//对于string中的每个字符
+<p>访问vector对象中元素方法也是通过元素在vector对象中的位置。例如，可以使用范围for语句处理vector对象中的所有元素。</p>
+<pre><code>          vector&lt;int&gt; v{1,2,3,4,5,6,7,8,9};
+          for(auto &amp;i:v)//对于v中的每一个元素
           {
-                  cout&lt;&lt;c&lt;&lt;endl;//输出当前字符，后面紧跟换行符。
+                  i*=i;//求该元素值的平方
           }
+          for(auto i:v)//对于v中的每个元素
+          {
+                  cout&lt;&lt;i&lt;&lt;&quot; &quot;;//输出该元素
+          }
+          cout&lt;&lt;endl;
 </code></pre>
 </li>
 <li>
-<p>for循环把变量c和str联系了起来，其中我们定义循环控制变量的方式与定义任意一个普通变量一样的。</p>
+<p>vector的empty和size两个成员于string的同名成员功能完全一致：empty检查vector对象是否包含元素然后返回一个布尔值；size则返回vector对象中元素的个数，返回值的类型是由vector定义的size_type类型。</p>
+<pre><code>          要是用size_type，须首先指定它是由哪种类型定义的vector对象的类型总是包含着元素类型：
+          vector&lt;int&gt;::size_type;//正确
+          vector::size_type;//错误
+</code></pre>
 </li>
 <li>
-<p>举个稍微复杂的例子，适用范围for语句和ispunct语句来统计string对象中标点符号的个数。</p>
-<pre><code>          string s(&quot;Hello World!!!&quot;);
-          //punct_cnt的类型和s.size的类型一样
-          for(auto c:s)//对于s中的每个字符
+<p>只有当元素的值可比较时，vector对象的值才能被比较。一些类，如string等，确实定义了自己的相等性运算符和关系运算符：另外一些，如Sales_item类。显然并不支持相等性判断和关系运算等操作。因此，不能比较两个vector&lt;Sales_item&gt;对象。</p>
+</li>
+</ul>
+<h3 id="%E8%AE%A1%E7%AE%97vector%E5%86%85%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B4%A2%E5%BC%95">计算vector内对象的索引</h3>
+<ul>
+<li>
+<p>只要vector对象不是一个常量，就能向下标运算符返回的元素赋值，也能通过计算的到vector内对象的索引，然后直接获取索引位置上的元素</p>
+</li>
+<li>
+<p>举个例子，假设有一组成及的集合，其中成绩的取值是从0到100，以10分为一个分数段，要求统计各个分数段各有多少个成绩，显然，从0到100有101个可能的成绩数值，这些成绩分布在11个分数段上：每十个分数构成一个分数段，这样的分数段有10个，额外还有一个分数端表示满分100分，按照上面的描述，如果输入成绩如下：</p>
+<pre><code>          42 65 95 100 39 67 95 76 88 76 83 92 76 93
+          //以10分为一个分数段统计成绩的数量
+          vector&lt;unsigned&gt; scores(11,0);//11个分数段，全都初始化为0
+          unsigned grade;
+          while(cin&gt;&gt;grade)//读取成绩
           {
-                  if(ispunct(c))//如果该字符是标点符号
+                  if(grade&lt;=100)//只处理有效成绩
                   {
-                          ++punct_cnt;//将标点符号的计数+1
+                          ++scores[grade/10];//将对应分数段的计数值加一
                   }
           }
-          cout&lt;&lt;punct_cnt&lt;&lt;&quot;punctuation characters in&quot;&lt;&lt;s&lt;&lt;endl;
 </code></pre>
 </li>
 <li>
-<p>程序的输出结果是：3 punctuation characters in Hello World!!!</p>
-</li>
-<li>
-<p>这里我们使用decltype关键字声明计数变量punct_cnt，他的类型是s.size哈桑怒胡返回值的类型，也就是string::size_type。</p>
-</li>
-</ul>
-<h3 id="%E4%BD%BF%E7%94%A8%E8%8C%83%E5%9B%B4for%E8%AF%AD%E5%8F%A5%E6%94%B9%E5%8F%98%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6">使用范围for语句改变字符串中的字符</h3>
-<ul>
-<li>
-<p>如果想要改变string对象中字符的值，必须把循环变量定义成引用类型。所谓引用哥只是给定变量的一个别名，这个变量实际上被依次绑定到了序列的每个元素上。使用这个引用我们就能改变他所绑定的字符。</p>
-</li>
-<li>
-<p>假设我们想要将字符串改编成大小写字母的形式，可以使用标准库函数toupper，该哈桑怒胡接受一个字符，输出其对应的大写贰形式。这样，可以把整个string对象转换成大写，只要对其中的每个字符调用toupper哈桑怒胡并将结果赋给元字符就可以了：</p>
-<pre><code>          string s(&quot;Hello World!!!&quot;);
-          //转换成大写形式
-          for(auto &amp;c:s)//对于s中的每个字符(c是引用)
-          (
-                  c=toupper(c);//c是一个引用，因此赋值语句见过改变s中字符的值
-          )
-          cout&lt;&lt;s&lt;&lt;endl;
-          上述代码的输出结果将是：HELLO WORLD!!!。
+<p>++scores[grade/10]等价于</p>
+<pre><code>          auto ind=grade/10;//得到分数段索引
+          scores[ind]=scores[ind]+1;//将计数值加一
 </code></pre>
 </li>
 </ul>
-<h3 id="%E5%8F%AA%E5%A4%84%E7%90%86%E4%B8%80%E9%83%A8%E5%88%86%E5%AD%97%E7%AC%A6%EF%BC%9F">只处理一部分字符？</h3>
+<h3 id="%E4%B8%8D%E8%83%BD%E7%94%A8%E4%B8%8B%E6%A0%87%E5%BD%A2%E5%BC%8F%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0">不能用下标形式添加元素</h3>
 <ul>
 <li>
-<p>有时我们只需要访问string对象中的一个字符，或者访问多个字符但遇到某个条件就要停下来。</p>
-</li>
-<li>
-<p>例如，仅仅将string对象中的第一个字符或第一个单词大写化。要想访问string中的单个字符有两种方式：一种是使用下标另外一种是使用迭代器。迭代器将在后面讲到。</p>
-</li>
-<li>
-<p><code>下标运算符([])</code>接收的参数是string::size_type类型的值，这个参数表示要访问的字符的位置。返回值是该位置闪光字符的<code>引用</code>。</p>
-</li>
-<li>
-<p>string的下标从0开始，如果string对象包含至少两个字符，则s[0]是第一个字符、s[1]是第二个字符、s[s.size()-1]是最后一个字符。</p>
-</li>
-<li>
-<p>string对象的下标必须大于等于0，而小于s.size()。使用超出此范围的下表会造成意想不到的后果。所以使用下表访问空string也会造成不可预知的效果。</p>
-</li>
-<li>
-<p>下标的值称为“下标”或者“索引”,任何表达式只要他的值是一个整型值，就能作为索引，如果某个索引是带符号类型的值就会自动转换成由string::size_type表达的无符号类型。</p>
-</li>
-<li>
-<p>使用下标运算符输出string对象的第一个字符：</p>
-<pre><code>          if(!s.empty())//确保有字符需要输出
+<p>下面的代码试图为vector对象ivec添加10个元素：</p>
+<pre><code>          vector&lt;int&gt; ivec;//空vector对象
+          for(decltype(ivec.size()) ix=0;ix!=10;++ix)
           {
-                  cout&lt;&lt;s[0]&lt;&lt;endl;//输出s的第一个字符
+                  ivec[ix]=ix;//严重错误，ivec不包含任何元素
           }
 </code></pre>
 </li>
 <li>
-<p>只要对string对象使用了下标，就要确保那个位置上确实有值。</p>
-</li>
-<li>
-<p>只要字符串不是常量，就能为下标运算符返回的字符赋新值。下面的程序将字符串的首字符转换成了大写形式。</p>
-<pre><code>          strinf s(&quot;some string&quot;);
-          if(!s.empty())
+<p>然而，这段代码是错误的，ivec是一个空vector,根本不包含任何元素，当然也就不能通过下标访问任何元素。正确的方法是使用push_back:</p>
+<pre><code>          for(decltype(ivec.size()) ix=0;ix~=10;++ix)
           {
-                  s[0]=toupper(s[0]);//为s的第一个字符赋新值。
+                  ivec.push_back(ix);//正确，添加一个新元素，这个元素的值是ix
           }
-          程序的输出结果是Some string
+          vector对象（以及string对象）的下标运算符可用于访问已存在的元素，而不能用于添加元素；
 </code></pre>
 </li>
 </ul>
-<h3 id="%E4%BD%BF%E7%94%A8%E4%B8%8B%E6%A0%87%E6%89%A7%E8%A1%8C%E8%BF%AD%E4%BB%A3">使用下标执行迭代</h3>
-<ul>
-<li>
-<p>把s中的第一个词改成大写：</p>
-<pre><code>          //一次处理s中的字符直至我们处理完全部字符或者遇到一个空白符
-          for(decltype(s.size()) index=0;index!=s.size()&amp;&amp;!isspace(s[index]);++index)
-          {
-                  s[index]=toupper(s[index]);//将当前字符改成大写形式
-          }
-</code></pre>
-</li>
-<li>
-<p>程序的输出结果是：SOME string</p>
-</li>
-<li>
-<p><code>逻辑运算符(&amp;&amp;)</code>：c++规定，只有当左侧运算对象为真时才会检查右侧运算对象的情况。</p>
-<pre><code>  * 注意检查下标的合法性：使用下标时必须确保其在合理范围内.一种简便易行的方法是，总是设下标的类型为string::size_type，因为此类形式无符号数，可以确保下标不会小于0。c++标准并不要求标准库检测下标是否合法。一旦使用了一个超出范围的下标就会产生不可预知的结果。
-</code></pre>
-</li>
-</ul>
-<h3 id="%E4%BD%BF%E7%94%A8%E4%B8%8B%E6%A0%87%E6%89%A7%E8%A1%8C%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE">使用下标执行随机访问</h3>
-<ul>
-<li>
-<p>其实能通过计算得到某个下标值，然后直接获取对应位置的字符，并不是每次都的从前往后一次访问。</p>
-</li>
-<li>
-<p>例如，想要编写一个程序把0到15之间的10进制数转换成对应的十六进制形式，秩序初始化一个字符串林奇存放16个十六进制“数字”:</p>
-<pre><code>          const string hexdigits=&quot;0123456789ABCDEF&quot;;//可能的十六进制数字
-          cout&lt;&lt;&quot;Enter a series of number between 0 and 15&quot;&lt;&lt;&quot;separated by spaces.Hit ENTER when finished:&quot;&lt;&lt;endl;
-
-          string result;//用于保存十六进制的字符串
-          string::size_type n;//用于保存从输入流读取的数
-          while(cin&gt;&gt;n)
-          {
-                  if(n&lt;hexdigits.size())
-                  {
-                          result+=hexdigits[n];//得到对应的十六进制数字
-                  }
-          }
-          cout&lt;&lt;&quot;Your hex number is:&quot;&lt;&lt;result&lt;&lt;endl;
-          假设输入的内容为：12 0 5 15 8 15
-          输出的结果为：Your hex number is C05F8F
-</code></pre>
-</li>
-<li>
-<p>在上面的程序中下表n是string::size_type类型。也就是无符号类型。实际使用时，还要检查n是否小于hexdigits的长度。</p>
-</li>
-</ul>
+<p>通过下标访问不存在元素的行为很常见，而且会产生很严重的后果。所谓的缓冲区溢出(buffer overflow)指的就是这类错误，这也是导致pc及其他设备上应用程序出现问题的一个重要原因。</p>
 
 </body>
     

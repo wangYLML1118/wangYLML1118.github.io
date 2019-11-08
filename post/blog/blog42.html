@@ -185,7 +185,7 @@
             
           
           
-            <a href='/'>My Site</a> > <a href='/post/'>My Posts</a> ><a href='/post/blog/index.html'>My Blog</a>>数据结构一(date structure)：树
+            <a href='/'>My Site</a> > <a href='/post/'>My Posts</a> ><a href='/post/blog/index.html'>My Blog</a>>Y86-64的顺序实现
           
          
           
@@ -220,89 +220,466 @@
 
         
 
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"availableFonts":["TeX"],"scale": 150}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
 
 
-<p>树</p>
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="y86-64%E7%9A%84%E7%86%9F%E6%82%89%E6%80%92%E5%AE%9E%E7%8E%B0">Y86-64的熟悉怒实现</h1>
+<ul>
+<li>我们现在已经有了实现Y86处理器所需要的不见，。首先，我们描述一个成为SEQ的处理器。每个始终周期上，SEQ执行处理一条完整指令所需的所有步骤。不过这需要一个很长的始终周期时间，因此始终周期频路会低到不可接受。我们开发SEQ的目标就是提供实现最终目的的第一步，我们的最终目的是实现一个搞笑的、流水线花的处理器。</li>
+</ul>
+<h2 id="%E5%B0%86%E5%A4%84%E7%90%86%E7%BB%84%E7%BB%87%E6%88%90%E9%98%B6%E6%AE%B5">将处理组织成阶段</h2>
+<ul>
+<li>通常嘎哈那个，处理一条指令包括很多操作。将他们组织成某个特殊的截断序列，即使指令的动作差异很大，但所有的指令都遵循统一的序列。每一步的具体处理取决于正在执行的指令。创建这样一个框架，我们就能设计一个充分利用硬件的处理器。下面是关于各个截断以及个截断内执行操作的简略描述：
+<ul>
+<li>取指：去直接断从内存读取指令字节，地址为程序计数器的值。从指令中抽取出指令符字节的两个四位部分，成为icode(指令代码)和ifun（指令功能）。它可能取出一个寄存器指令符字节，知名一个或两个寄存器操作数指示符rA和rB。它还可能取出一个四字节常数字calC。它按顺序方式计算当前指令的下一条指令的地址valP。也就是说，valP等于PC的值加上已取出指令的长度。</li>
+<li>译码：译码截断从寄存器文件读入最多两个操作数，得到值valA和valB，通常，它读入指令rA和rB字段指明的寄存器，不过有些指令是读寄存器%rsp的。</li>
+<li>执行：在执行截断，算术\逻辑单元（ALU）要么执行指令致命的操作（根据ifun的值），计算内存引用的有效地址，要么增加或减少栈指针。得到的值我们成为valE。在此，也可能设置条件码。对一条条件传送指令来说，这个截断会检验条件码和传送条件（由ifun给出），如果条件成立，则更新目标存储器。同样，对一条跳转指令来说，这个截断会决定是不是应该选择分之。</li>
+<li>访存：方寸截断可以讲数据写入内存，或者从内存读入数据。独处的值为valM。</li>
+<li>写回：邪乎截断最多可以两个结果到寄存器文件。</li>
+<li>更新PC：将PC设置成下一条指令的地址。</li>
+</ul>
+</li>
+<li>处理器无线循环，执行这些截断。在我们简化的视线中，发生任何宜昌市，处理器就会停止：他执行halt指令或非法指令，或它试图读或写非法地址。在更完整的设计中，处理器会进入异常处理模式，开始执行有异常的类型决定的特殊代码。</li>
+<li>执行一条指令是需要进行跟多处理的。我们不仅必须执行指令所标明的操作，还必须计算地址、更新栈指针，以及确定下一条指令的地址。型号每条指令的整个流程都比较想死。因为我们像是硬件数量尽可能少，并且最终把它映射到一个二维的集成电路芯片的表面，在涉及硬件是，一个非常简单而已知的结构式非常重要的。降低复杂度的一种方法是让不同的指令共享尽量多的硬件。例如，我们的每个处理器设计都只含有一个算术\逻辑单元，根据所执行的指令类型的不同，它的使用方式也不同。在硬件上赋值逻辑块的成本比软件中有重复代码的成本大的多。而且在硬件系统中处理许多特殊情况和特性要比软件来处理困难得多。</li>
+</ul>
+<h2 id="seq%E7%A1%AC%E4%BB%B6%E7%BB%93%E6%9E%84">SEQ硬件结构</h2>
+<ul>
+<li>实现所有所有Y86指令所需要加计算可以被组织成6个基本截断：取指、译码、执行、访存、写回和更新PC。途中给出了一个能执行这些计算的硬件结构的抽象表示。程序计数器放在寄存器中。图中的左下角（标明为PC）。然后，信息沿着线流动（多条线组合在一起就用宽一点的线来表示），先向上，再向右。通各个阶段相关的硬件单元负责执行这些处理。在右边，反馈线路乡下，包括要写到寄存器文件的更新值，以及更新的程序计数器值。在SEQ中，所有硬件单元的处理都在一个时钟周期内完成。这张图省略了一些小的组合逻辑块。还省略了所有用来操作各个硬件单元以及将相应的值路由到这些单元的控制逻辑。</li>
+<li>硬件单元与各个处理阶段相关联。
+<ul>
+<li>取指：坚持个好年新股计数器寄存器作为地址，指令内存读取指令的字节。PC增加其计算valP，既增加了程序计数器</li>
+<li>译码：寄存器文件有两个读端口A和B，从这两个端口同时读寄存器值valA和valB</li>
+<li>执行：执行阶段会根据指令的类型，将算数/逻辑单元（ALU）用于不同的目的。对整数操作，它要执行指令所指定的运算。对其他指令，它会作为一个加法器来计算增加或减少栈指针，或者计算有效地址，或者只是简单地加0，讲一个输入传递到输出。条件码寄存器（CC）有三个条件码位。ALU负责计算条件吗的心智。当执行条件传送指令时，根据条件码和传送条件来计算决定是否更新目标寄存器。同样，当执行一条跳转指令时，会根据条件码和跳转类型来计算分之信号Cnd。</li>
+<li>访存：在执行访存操作时，数据内存读入或写出一个内存自。指令和数据内存访问的相同的内存位置，但是用于不同的目的。</li>
+<li>写回：寄存器文件有两个端口。端口E用来写ALU计算出来的值，二端口M用来写入数据内存中读出的值。</li>
+<li>PC更新：程序计数器的新值选择自：valP，下一条指令的地址；valC，调用指令或跳转指令指定的目标地址；valM，从内存读取的返回地址。
+<img src="file:///c:/Users/26239/Desktop/blog/SEQ抽象视图.png" alt="SEQ抽象视图.png">
+<img src="file:///c:/Users/26239/Desktop/blog/SEQ硬件结构.png" alt="SEQ硬件结构.png"></li>
+</ul>
+</li>
+<li>图4-23给出了更详细的实现SEQ所需要的硬件（分析每个阶段是，我们会看到完整的细节）。我们看到一组和前面一样的硬件单元，但是现在线路看得更清楚了。这幅图的画图惯例：
+<ul>
+<li>白色方框表示始终寄存器。程序计数器PC是SEQ中唯一的始终寄存器。</li>
+<li>浅蓝色方框表示硬件单元。这包括内存、ALU等等。在我们所有的处理器实现中，都会使用这一组基本单元。我们把这些单元当做“黑盒子”,不关心它们的细节设计。</li>
+<li>控制逻辑块用灰色圆角举行表示。这些快用来从一组信号源中进行选择，或者用来计算一些布尔函数。我们会非常详细地分析这些快，包括给出HCL描述。</li>
+<li>线路的名字在白色圆圈中说明。他们只是线路的表示，而不是什么硬件单元。</li>
+<li>宽度为字长的数据连接用中等粗度的线。每条这样的县实际上都代表一簇64根线，并列得；连接在一起，讲一个字东硬件的一个部分传送到另一个部分。</li>
+<li>宽度为字节或更窄的数据连线用细线表示。根据线上要携带的值的类型，每条这样的线实际上都代表一簇4或8根线。</li>
+<li>单个位的链接用虚线表示。这代表芯片上单元与块之间传递的控制值。</li>
+</ul>
+</li>
+</ul>
+<h2 id="seq%E7%9A%84%E6%97%B6%E5%BA%8F">SEQ的时序</h2>
+<ul>
+<li>
+<p>图4-23中硬件结构的操作运行根本完全不同，一个始终变化会引发一个经过组合逻辑的流，来执行整个指令。</p>
+</li>
+<li>
+<p>SEQ的实现包括组合逻辑和两种存储设备：时钟寄存器(程序计数器和条件码寄存器)，随机访问存储器（寄存器文件、指令内存和数据内存）。组合逻辑不需要任何时序或控制——只要输入变化了，织就通过逻辑门网络传播。正如提到过的那样，我们也将读随机访问存储器看成和组合逻辑一样的操作，根据地址输入产生输出字。对于较小的存储器来说（例如寄存器文件），这是一个合理的假设，而对于较大的电路来说，可以用特殊的时钟电路来模拟这个效果，由于指令内存用来杜志玲，因此我们可以将这个单元看成是组合逻辑。</p>
+</li>
+<li>
+<p>现在还剩四个硬件单元需要对他们的时序进行明确的控制——程序计数器、条件码就存器、数据内存和寄存器文件。这些单元通过一个时钟信号来控制，它触发将新值装载到寄存器以及将值写到随机访问存储器。每个时钟周期，程序计数器都会装载新的指令地址。只有在执行证书运算指令时，才会装载条件码寄存器。只有在执行rmmovq、pushq或call指令时，才会写数据内存。寄存器文件的两个写端口允许每个时钟周期更新两个程序寄存器，不过我们可以用特殊的寄存器ID-xF作为端口地址，来表明在此端口不应该执行写操作。</p>
+</li>
+<li>
+<p>要控制处理器中活动的时序，只需要寄存器和内存的始终控制。硬件获得了赋值顺序执行一样的效果，即使所有的状态更新实际上同时发生，且只在始终上升开始下一个周期时。之所以能保持这样的等价性，是由于Y86指令集的本质，因为我们遵循以下原则组织计算。</p>
+<pre><code>  原则：从不回读
+  处理器从来不需要为了完成一条指令的执行而去读又该指令更新了的状态。
+</code></pre>
+</li>
+<li>
+<p>这条原则对实现的成功来说至关重要。为了说明问题，假设我们对pushq指令的实现试讲%rsp减8，再讲更新后的%rsp值作为写操作的地址。这种方法同前面所说的那个原则相违背。为了执行内存操作，它需要先从寄存器文件中读更新过的栈指针。然而，我们的实现产生出减后的栈指针值，作为信号valE，然而再将这个信号即作为寄存器写的数据，也作为内存写的地址。因此，在时钟上升开始下一个周期时，处理器就可以同时执行寄存器写和内存写了。</p>
+</li>
+</ul>
+<h2 id="seq%E9%98%B6%E6%AE%B5%E7%9A%84%E5%AE%9E%E7%8E%B0">SEQ阶段的实现</h2>
+<p><img src="file:///c:/Users/26239/Desktop/blog/HCL描述中使用的常数量.png" alt="HCL描述中使用的常数量.png"></p>
+<ul>
+<li>nop指令只是简单地经过各个截断，除了要将PC加一，不进行任何处理。halt指令使得处理器状态被设置成HLT，导致处理器停止运行。</li>
+</ul>
+<h4 id="%E5%8F%96%E6%8C%87%E9%98%B6%E6%AE%B5">取指阶段</h4>
+<ul>
+<li>取指阶段包括指令内存硬件单元。以PC作为第一个字节的地址，这个单元一次从内存独处10个字节。第一个字节被解释成指令字节（标号为“Split”的单元）分为两个4位的数。然后，标号为“icode”和“ifun”的控制逻辑块计算指令和功能码，或者使之等于从内存读入的值，或者当指令地址不合法时（由信号imem_error指明），使这些值对应于nop指令，根据icode的值，我们可以计算三个一位的信号（用虚线表示）。instr_valid：这个字节用来发现一个不合法的Y86指令。当指令地址越解释会产生的信号instr_valid和imem_error在访存阶段被用来产生状态码。
+<img src="file:///c:/Users/26239/Desktop/blog/SEQ的取指阶段.png" alt="SEQ的取指阶段.png"></li>
+</ul>
+<h4 id="%E8%AF%91%E7%A0%81%E5%92%8C%E5%86%99%E5%9B%9E%E9%98%B6%E6%AE%B5">译码和写回阶段</h4>
+<ul>
+<li>把两个阶段联系在一起是因为他们都要访问寄存器文件</li>
+<li>寄存器文件有四个端口。它支持同时进行两个读（端口A和B）和两个写（端口E和M）。每个断就都有一个地址链接和一个数据链接。地址链接是一个寄存器ID，而数据链接十一组64跟线路，既可以作为寄存器文件的输出字（对读端口来说），也可以作为它的输入字（对写端口来说）。两个度端口的地址输入为srcA和srcB，而两个写端口的地址输入为dstE和dstM。如果某个地址端口上的值为特殊标识符0xF(RNONE)，则表明不需要访问寄存器</li>
+</ul>
 
 
-<p>树定义（以递归的方式）：专业定义：1、有且只有一个称为根的节点 2、有若干个互不相交的子树，这些子树本身也是一个数</p>
-<p>通俗：</p>
-<p>1、树是由节点和边（指针）组成的 2、每个节点只有一个父节点，但可以有多个子节点 3、但有一个节点例外，该节点没有父节点，该节点被称为根节点</p>
-<P>专业术语：</p>
-<p>节点  父节点  字节点  子孙  堂兄弟</p>  
-<p>深度：从根节点到最底层节点的层数称之为深度（根节点是第一层）</p>
-<p>叶子节点：没有子节点的节点</p>
-<p>非终端节点==非叶子节点（有子节点的节点）</p>
-<p>度：子节点的个数称为度</p>
-
-
-
-<p>树分类（作为初学者）</p>
-<p>一般树：任意一个子节点的个数都不受限制</p>
-<p>二叉树：任意一个子节点的个数最多两个，且子节点的位置不可更改</p>
-    <p>二叉树更详细的分类：</p>
-        <p>1、一般二叉树</p>
-        <p>2、满二叉树：在不增加树的层数的情况下，无法多再添加一个节点的二叉树就是满二叉树</p>
-        <p>3、完全二叉树：如果只是删除了满二叉树最底层最右边的连续若干个节点，这样形成的二叉树就是完全二叉树</p>
-<p>森林：n个互不相干的树的集合</p>
-
-
-
-
-<p>树存储：</p>
-    <p>1、二叉树的存储：</p>
-        <p>连续存储【完全二叉树】</p>
-            <p>优点：查找某个节点的父节点和子节点（也包括判断有没有子节点）速度很快</p>
-            <p>缺点：耗用内存空间过大</p>
-        <p>链式存储</p>
-            
-    <p>2、一般树的存储</p>
-        <p>双亲表示法</p>
-            <p>求父节点方便</p>
-        <p>孩子表示法</p>
-            <p>求子节点表示法</p>
-        <p>双亲孩子表示法</p>
-            <p>求父节点和字节点都很方便</p>
-        <p>二叉树表示法</p>
-            <p>把一个普通树转化成二叉树来存储</p>
-                <p>具体转化方法：设法保证任意一个节点的左指针域只想它的第一个孩子，右指针指向它的兄弟，只要能满足这个条件，就可以把一个普通树转化为一个二叉树</p>
-                <p>一个普通树转化成的二叉树一定没有右子树</p>
-    <p>3、森林的存储</p>
-        <p>先把森林转化为二叉树，再存储二叉树</p>
-
-
-
-<p>树操作（通常指二叉树）</p>
-    <p>遍历</p>
-        <p>先序遍历</p>
-            <p>先访问根节点</p>
-            <p>再先序访问左子树</p>
-            <p>再先序访问右子树</p>
-        <p>中序遍历</p>
-            <p>中序遍历左子树</p>
-            <p>再访问根节点</p>
-            <p>再中序遍历右子树</p>
-        <p>后序遍历</p>
-            <p>后序遍历左子树</p>
-            <p>后序遍历右子树</p>
-            <p>再访问根节点</p>
-    <p>已知两种遍历序列求原始二叉树</p>
-<p>通过先序和中序 或者 中序和后序我们可以还原出原始的二叉树</p>
-<p>但是通过先序和后序我们无法还原出原始的二叉树</p>    
-        <p>已知先序和中序求后序</p>
-            <p>实例一</p>
-            <p>先序：ABCDEFGH</p>
-            <p>中序：BDCEAFHG</p>
-            <p>求后序：DECBHGFA</p>
-            <p>实例二</p>
-            <p>先序：ABDGHCEFI</p>
-            <p>中序：GDHBAECIF</p>
-            <p>求后序:GHDBEIFCA</p>
-<p>应用：</p>
-<p>树是数据库中数据组织的一种重要形式</p>
-<p>操作系统子父进程的关系本身就是一棵树</p>
-<p>面对对象语言中累的继承关系本身就是一棵树</p>
-<p>赫夫曼树</p>
     
 
 

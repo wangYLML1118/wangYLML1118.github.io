@@ -223,31 +223,6 @@
 
 
 
-    
-
-
-
-<footer class=" footline" >
-	
-</footer>
-
-
-        
-        </div> 
-        
-
-      </div>
-
-    <div id="navigation">
-        
-        
-        
-        
-            
-            
-                
-                    
-                    
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
@@ -685,6 +660,32 @@ blockquote {
 <li>这个内存有一个地址输入，一个写的数据输入，以及一个读的数据输出。同寄存器文件一样，从内存中读的操作方式类似于组合逻辑：如果我们在输入address上提供一个地址，并将write控制信号设置为0，那么在经过一些延迟之后，存储在那个低智商的值就会出现在输出data上，如果地址超出了范围，error信号会设置为1，否则就设置为0.写内存是由时钟控制的：我们将address设置为期望的地址，将data in设置为期望的值，而write设置为1，然后我们控制时钟是，只要地址适合法的，就会更新内存中指定的位置。对于读操作来说，如果地址是不合法的，error信号会被设置为1.这个信号是由组合逻辑产生的，因为所需要的便捷检查纯粹就是地址输入的函数，不涉及保存任何状态。</li>
 <li>我们的处理器还包括另外一个只读存储器，用来读指令。在大多数实际系统中，这两个存储器被合并为一个具有双端口的存储器：一个用来读指令，另一个用来度或者写数据。</li>
 </ul>
+    
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+
                 
                 
 

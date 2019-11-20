@@ -626,8 +626,8 @@ blockquote {
 <li>访存：在执行访存操作时，数据内存读入或写出一个内存自。指令和数据内存访问的相同的内存位置，但是用于不同的目的。</li>
 <li>写回：寄存器文件有两个端口。端口E用来写ALU计算出来的值，二端口M用来写入数据内存中读出的值。</li>
 <li>PC更新：程序计数器的新值选择自：valP，下一条指令的地址；valC，调用指令或跳转指令指定的目标地址；valM，从内存读取的返回地址。
-<img src="file:///c:/Users/26239/Desktop/blog/SEQ抽象视图.png" alt="SEQ抽象视图.png">
-<img src="file:///c:/Users/26239/Desktop/blog/SEQ硬件结构.png" alt="SEQ硬件结构.png"></li>
+<img src="SEQ抽象视图.png" alt="SEQ抽象视图.png">
+<img src="SEQ硬件结构.png" alt="SEQ硬件结构.png"></li>
 </ul>
 </li>
 <li>图4-23给出了更详细的实现SEQ所需要的硬件（分析每个阶段是，我们会看到完整的细节）。我们看到一组和前面一样的硬件单元，但是现在线路看得更清楚了。这幅图的画图惯例：
@@ -664,7 +664,7 @@ blockquote {
 </li>
 </ul>
 <h2 id="seq%E9%98%B6%E6%AE%B5%E7%9A%84%E5%AE%9E%E7%8E%B0">SEQ阶段的实现</h2>
-<p><img src="file:///c:/Users/26239/Desktop/blog/HCL描述中使用的常数量.png" alt="HCL描述中使用的常数量.png"></p>
+<p><img src="HCL描述中使用的常数量.png" alt="HCL描述中使用的常数量.png"></p>
 <ul>
 <li>nop指令只是简单地经过各个截断，除了要将PC加一，不进行任何处理。halt指令使得处理器状态被设置成HLT，导致处理器停止运行。</li>
 </ul>

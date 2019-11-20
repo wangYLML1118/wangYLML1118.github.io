@@ -671,7 +671,7 @@ blockquote {
 <h4 id="%E5%8F%96%E6%8C%87%E9%98%B6%E6%AE%B5">取指阶段</h4>
 <ul>
 <li>取指阶段包括指令内存硬件单元。以PC作为第一个字节的地址，这个单元一次从内存独处10个字节。第一个字节被解释成指令字节（标号为“Split”的单元）分为两个4位的数。然后，标号为“icode”和“ifun”的控制逻辑块计算指令和功能码，或者使之等于从内存读入的值，或者当指令地址不合法时（由信号imem_error指明），使这些值对应于nop指令，根据icode的值，我们可以计算三个一位的信号（用虚线表示）。instr_valid：这个字节用来发现一个不合法的Y86指令。当指令地址越解释会产生的信号instr_valid和imem_error在访存阶段被用来产生状态码。
-<img src="file:///c:/Users/26239/Desktop/blog/SEQ的取指阶段.png" alt="SEQ的取指阶段.png"></li>
+<img src="SEQ的取指阶段.png" alt="SEQ的取指阶段.png"></li>
 </ul>
 <h4 id="%E8%AF%91%E7%A0%81%E5%92%8C%E5%86%99%E5%9B%9E%E9%98%B6%E6%AE%B5">译码和写回阶段</h4>
 <ul>

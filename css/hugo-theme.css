@@ -36,6 +36,7 @@
 body {
     font-size: 16px !important;
     color: #323232 !important;
+    background:url("images/狗妈.jpg");
 }
 
 #body a.highlight, #body a.highlight:hover, #body a.highlight:focus {
